@@ -7,12 +7,17 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.bmuschko:gradle-docker-plugin:3.0.12'
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 group = 'nl.enhance'
 version = '0.0.1-SNAPSHOT'
@@ -33,10 +38,32 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+task copyJar(type: Copy) {
+	dependsOn(bootRepackage)
+	def fileName = "$project.name-${project.version}.jar"
+
+	from "$buildDir/libs/${fileName}"
+	into "$buildDir/docker/"
+	include(fileName)
+	rename (fileName, 'favbuild.jar')
+
+}
+
+task createDockerfile(type: Dockerfile) {
+
+	instructionsFromTemplate(new File(project.buildDir.getParent() + "/Dockerfile"))
+}
+
+task buildImage(type: DockerBuildImage) {
+
+	inputDir = createDockerfile.destFile.parentFile
+	tag = "favbuild:${project.version}".toString()
+}
+
+buildImage.dependsOn(copyJar, createDockerfile)
+build.dependsOn(buildImage)
 
 test {
-
-	// Exclude Integration tests from default build. Use separate task integrationTests to run these tests.
 	include '**/*Test.*'
 	exclude '**/*IntegrationTest.*'
 	exclude '**/*FunctionalTest.*'
@@ -46,11 +73,9 @@ test {
 }
 
 task integrationTests(type: Test, dependsOn: testClasses)  {
-
 	include '**/*IntegrationTest.*'
 }
 
 task functionalTests(type: Test, dependsOn: testClasses)  {
-
 	include '**/*FunctionalTest.*'
 }
