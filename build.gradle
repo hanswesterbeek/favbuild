@@ -11,7 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 group = 'nl.enhance'
@@ -22,10 +22,35 @@ repositories {
 	mavenCentral()
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.3'
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+test {
+
+	// Exclude Integration tests from default build. Use separate task integrationTests to run these tests.
+	include '**/*Test.*'
+	exclude '**/*IntegrationTest.*'
+	exclude '**/*FunctionalTest.*'
+	testLogging {
+		showStandardStreams = project.hasProperty("showTestLogging")
+	}
+}
+
+task integrationTests(type: Test, dependsOn: testClasses)  {
+
+	include '**/*IntegrationTest.*'
+}
+
+task functionalTests(type: Test, dependsOn: testClasses)  {
+
+	include '**/*FunctionalTest.*'
 }
