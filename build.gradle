@@ -42,6 +42,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile 'io.rest-assured:rest-assured:3.0.5'
+	testCompile 'io.rest-assured:json-path:3.0.5'
 }
 
 task copyJar(type: Copy) {
@@ -122,7 +124,7 @@ task functionalTest(type: Test, dependsOn: testClasses)  {
 	doFirst {
 		def dockerRuntimeInfo = dockerCompose.servicesInfos
 		def envProperties = [:]
-		envProperties['app.url'] = "http://localhost:${dockerRuntimeInfo.app.ports[9999]}/"
+		envProperties['app.url'] = "http://localhost:${dockerRuntimeInfo.app.ports[9999]}"
 		envProperties.each { k, v -> systemProperty (k, (v as String)) }
 	}
 }
