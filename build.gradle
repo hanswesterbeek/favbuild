@@ -16,8 +16,8 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'com.bmuschko.docker-remote-api'
-apply plugin: 'docker-compose'
+apply plugin: 'com.bmuschko.docker-remote-api' // allows us to build a docker-image from our .jar
+apply plugin: 'docker-compose' // allows us to start the app and run it
 
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
@@ -54,7 +54,6 @@ task copyJar(type: Copy) {
 	into "$buildDir/docker/"
 	include(fileName)
 	rename (fileName, 'favbuild.jar')
-
 }
 
 task createDockerfile(type: Dockerfile) {
@@ -75,11 +74,10 @@ dockerCompose {
 
 	buildBeforeUp = false // everything was already built
 
-	// by default we wait no longer than 300 seconds for everything to become healthy
 	waitForHealthyStateTimeout = project.hasProperty("startTimeOutSeconds")?
 			Duration.ofSeconds(Long.parseLong(project.getProperty('startTimeOutSeconds'))): Duration.ofSeconds(30)
 
-	projectName = "e2etests_${project.version}"
+	projectName = "fT_${project.version}"
 	captureContainersOutput = project.hasProperty('containerLogEnabled')
 	// kill swiftly when we're done
 	dockerComposeStopTimeout = Duration.ofSeconds(1)
@@ -94,6 +92,7 @@ dockerCompose {
 	environment.put('TAG', project.version)
 
 	if (project.hasProperty("debugMode")) {
+		// for repeated execution of to debug a functional test, don't want to always restart our app.
 		stopContainers = false
 		removeContainers = false
 	}
@@ -105,18 +104,7 @@ dockerCompose {
 	removeVolumes = true
 }
 
-test {
-	include '**/*Test.*'
-	exclude '**/*IntegrationTest.*'
-	exclude '**/*FunctionalTest.*'
-	testLogging {
-		showStandardStreams = project.hasProperty("showTestLogging")
-	}
-}
 
-task integrationTest(type: Test, dependsOn: testClasses)  {
-	include '**/*IntegrationTest.*'
-}
 
 task functionalTest(type: Test, dependsOn: testClasses)  {
 	include '**/*FunctionalTest.*'
@@ -130,3 +118,13 @@ task functionalTest(type: Test, dependsOn: testClasses)  {
 }
 
 dockerCompose.isRequiredBy(functionalTest)
+
+test {
+	include '**/*Test.*'
+	exclude '**/*IntegrationTest.*'
+	exclude '**/*FunctionalTest.*'
+}
+
+task integrationTest(type: Test, dependsOn: testClasses)  {
+	include '**/*IntegrationTest.*'
+}
