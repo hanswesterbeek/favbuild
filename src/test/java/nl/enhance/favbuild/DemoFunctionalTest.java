@@ -17,8 +17,7 @@ public class DemoFunctionalTest {
     @Test
     public void foo() throws MalformedURLException {
 
-        String baseUrl = System.getProperty("app.url");
-        final String url = baseUrl + "/foo";
+        final String url = System.getProperty("app.url") + "/foo";
         final Response response =
                 when().get(new URL(url)).then()
                         .assertThat().statusCode(200)
