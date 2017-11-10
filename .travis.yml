@@ -20,4 +20,4 @@ cache:
 
 script:
   - ./gradlew build
-  - ./gradlew uT  --stacktrace --info
+  - ./gradlew -PdockerPath=/usr/bin/docker uT  --stacktrace --info
