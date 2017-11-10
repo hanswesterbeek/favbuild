@@ -68,7 +68,7 @@ task buildImage(type: DockerBuildImage) {
 }
 
 buildImage.dependsOn(copyJar, createDockerfile)
-build.dependsOn(buildImage)
+build.finalizedBy(buildImage)
 
 dockerCompose {
 
