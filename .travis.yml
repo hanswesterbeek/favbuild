@@ -1,3 +1,7 @@
+sudo: required
+services:
+  - docker
+
 language: java
 
 jdk:
@@ -16,4 +20,4 @@ cache:
 
 script:
   - ./gradlew build
-  - ./gradlew iT uT  --stacktrace --info
+  - ./gradlew uT  --stacktrace --info
