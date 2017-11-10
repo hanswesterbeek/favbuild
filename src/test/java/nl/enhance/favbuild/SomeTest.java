@@ -6,9 +6,9 @@ import org.junit.Test;
 
 public class SomeTest {
 
-    @Test
-    public void foo() {
-        assertTrue(true);
-    }
+  @Test
+  public void foo() {
+    assertTrue(true);
+  }
 
 }

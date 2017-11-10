@@ -14,18 +14,14 @@ import io.restassured.response.Response;
 
 public class DemoUiTest {
 
-    @Test
-    public void seeIfWeCanTalkToTheApp() throws MalformedURLException {
+  @Test
+  public void seeIfWeCanTalkToTheApp() throws MalformedURLException {
 
-        final String url = System.getProperty("app.url") + "/foo";
-        final Response response =
-                when().get(new URL(url)).then()
-                        .assertThat().statusCode(200)
-                        .assertThat().contentType(ContentType.JSON).extract()
-                .response();
-        JsonPath jsonPath = new JsonPath(response.asInputStream());
-        final String result = jsonPath.getString("foo");
-        assertTrue(("bar".equals(result)));
-    }
+    final String url = System.getProperty("app.url") + "/foo";
+    final Response response = when().get(new URL(url)).then().assertThat().statusCode(200).assertThat().contentType(ContentType.JSON).extract().response();
+    JsonPath jsonPath = new JsonPath(response.asInputStream());
+    final String result = jsonPath.getString("foo");
+    assertTrue(("bar".equals(result)));
+  }
 
 }

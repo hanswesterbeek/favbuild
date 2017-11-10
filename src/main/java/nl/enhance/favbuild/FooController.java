@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FooController {
 
-    @RequestMapping(value = "/foo")
-    public Map<String, String> bar() {
+  @RequestMapping(value = "/foo")
+  public Map<String, String> bar() {
 
-        return Collections.singletonMap("foo", "bar");
-    }
+    return Collections.singletonMap("foo", "bar");
+  }
 }
