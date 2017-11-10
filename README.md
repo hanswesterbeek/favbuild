@@ -1,3 +1,5 @@
+![](https://travis-ci.org/hanswesterbeek/favbuild.svg)
+
 # Introduction
 
 This is a sample project demonstrating execution of UI tests. 
