@@ -16,4 +16,4 @@ cache:
 
 script:
   - ./gradlew build
-  - ./gradlew iT uT
+  - ./gradlew iT uT  --stacktrace --info
