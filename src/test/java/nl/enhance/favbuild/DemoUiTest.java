@@ -12,10 +12,10 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-public class DemoFunctionalTest {
+public class DemoUiTest {
 
     @Test
-    public void foo() throws MalformedURLException {
+    public void seeIfWeCanTalkToTheApp() throws MalformedURLException {
 
         final String url = System.getProperty("app.url") + "/foo";
         final Response response =

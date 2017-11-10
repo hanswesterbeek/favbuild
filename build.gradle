@@ -106,8 +106,8 @@ dockerCompose {
 
 
 
-task functionalTest(type: Test, dependsOn: testClasses)  {
-	include '**/*FunctionalTest.*'
+task uiTest(type: Test, dependsOn: testClasses)  {
+	include '**/*UiTest.*'
 
 	doFirst {
 		def dockerRuntimeInfo = dockerCompose.servicesInfos
@@ -117,12 +117,12 @@ task functionalTest(type: Test, dependsOn: testClasses)  {
 	}
 }
 
-dockerCompose.isRequiredBy(functionalTest)
+dockerCompose.isRequiredBy(uiTest)
 
 test {
 	include '**/*Test.*'
 	exclude '**/*IntegrationTest.*'
-	exclude '**/*FunctionalTest.*'
+	exclude '**/*UiTest.*'
 }
 
 task integrationTest(type: Test, dependsOn: testClasses)  {
