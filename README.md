@@ -1,10 +1,10 @@
-![](https://travis-ci.org/hanswesterbeek/favbuild.svg)
-
+![Travis](https://travis-ci.org/hanswesterbeek/favbuild.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/602d39b6ae9d467da4a97e7a6b7a495d)](https://www.codacy.com/app/hanswesterbeek/favbuild?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=hanswesterbeek/favbuild&amp;utm_campaign=Badge_Grade)
 # Introduction
 
 This is a sample project demonstrating execution of UI tests. 
 By 'UI tests' I mean tests that talk to the app through its endpoints only 
-(as opposed to unit or integration tests). Not that UI != GUI. A REST endpoint is a UI too.
+(as opposed to unit or integration tests). Note that UI != GUI. A REST endpoint is a UI too.
 
 The project in this repo is setup I like for Java projects and I thought I should keep a blueprint of it somewhere.
 
